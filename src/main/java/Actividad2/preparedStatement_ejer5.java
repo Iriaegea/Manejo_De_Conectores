@@ -2,8 +2,8 @@ package Actividad2;
 
 import java.sql.*;
 import java.util.Scanner;
-import java.time.LocalDate;
-public class preparedStatement {
+
+public class preparedStatement_ejer5 {
     static void main() {
         Scanner sc = new Scanner(System.in);
         String url = "jdbc:mysql://localhost:3306/empresa_ventas";
