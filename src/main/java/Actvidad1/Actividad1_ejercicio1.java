@@ -1,4 +1,4 @@
-package org.example.Actvidad1;
+package Actvidad1;
 //jdbc:h2:mem:mi_base
 
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package org.example.Actvidad1;
+package Actvidad1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
