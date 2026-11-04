@@ -26,14 +26,16 @@ public class statement {
             Statement stmt = conn.createStatement()){
             //LISTAR TODOS LOS EMPLEADOS:
             System.out.println("LISTAR TODOS LOS EMPLEADOS: \n");
-            ResultSet rs = stmt.executeQuery(consulta);
-            while (rs.next()){
-                int numero = rs.getInt("EMP_NO");
-                String apellido = rs.getString("APELLIDO");
-                String oficio = rs.getString("OFICIO");
-                double salario = rs.getDouble("SALARIO");
-                System.out.println("Numero: " + numero + " Apellido: " + apellido + " Oficio: " + oficio + " Salario: " + salario);
+            try(ResultSet rs = stmt.executeQuery(consulta)){
+                while (rs.next()){
+                    int numero = rs.getInt("EMP_NO");
+                    String apellido = rs.getString("APELLIDO");
+                    String oficio = rs.getString("OFICIO");
+                    double salario = rs.getDouble("SALARIO");
+                    System.out.println("Numero: " + numero + " Apellido: " + apellido + " Oficio: " + oficio + " Salario: " + salario);
+                }
             }
+
 
 
             //INSERTAR UN DEPARTAMENTO CON VALORES DIRECTOS:
