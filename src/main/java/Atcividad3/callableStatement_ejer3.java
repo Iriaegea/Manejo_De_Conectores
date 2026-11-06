@@ -1,10 +1,7 @@
 package Atcividad3;
 
 import java.math.BigDecimal;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Scanner;
 
 public class callableStatement_ejer3 {
@@ -21,12 +18,22 @@ public class callableStatement_ejer3 {
         BigDecimal salario;
         String consulta = "{CALL incrementarSalario(?)}";
 
+
         System.out.println("Escribe un salario: ");
         salario = sc.nextBigDecimal();
 
         try(Connection conn = DriverManager.getConnection(url, usuario, contraseña);
             CallableStatement cs = conn.prepareCall(consulta)){
-            cs.setBigDecimal(salario);
+            cs.setBigDecimal(1, salario);
+            cs.registerOutParameter(1, Types.DECIMAL);
+            cs.execute();
+            salario = cs.getBigDecimal(1);
+
+            if(salario == null){
+                System.out.println("No se ha devuelto ningun salario");
+            } else {
+                System.out.println("Salario incrementado: " + salario);
+            }
 
 
         }catch (SQLException e){
@@ -40,3 +47,14 @@ public class callableStatement_ejer3 {
 
     }
 }
+
+
+/*
+* DELIMITER //
+CREATE PROCEDURE incrementarSalario(INOUT salario Decimal(10,2))
+BEGIN
+	SET salario = salario + (salario * 0.05);
+END //
+DELIMITER ;
+* */
+
