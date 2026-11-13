@@ -29,12 +29,12 @@ public class resultSet_ejer5 {
              ResultSet rs = ps.executeQuery(consulta)
         ) {
             if(rs.first()){
-                salario = rs.getBigDecimal(1);
+                salario = rs.getBigDecimal(2);
                 System.out.println("Salario del primero: " + salario);
 
-                salario = ( salario.multiply(new BigDecimal(1.10)));
+                salario = ( salario.multiply(new BigDecimal("1.10")));
 
-                rs.updateBigDecimal(1, salario);
+                rs.updateBigDecimal(2, salario);
                 rs.updateRow();
 
 

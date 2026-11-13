@@ -1,4 +1,4 @@
-package Actvidad1;
+package ActIvidad1;
 import org.h2.tools.Console;
 public class ConsolaH2 {
     static void main() throws Exception {

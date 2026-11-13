@@ -1,4 +1,4 @@
-package Actvidad1;
+package ActIvidad1;
 //jdbc:h2:mem:mi_base
 
 import java.sql.Connection;
