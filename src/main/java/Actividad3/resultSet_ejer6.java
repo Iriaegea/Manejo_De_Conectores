@@ -1,6 +1,5 @@
-package Atcividad3;
+package Actividad3;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Scanner;
 

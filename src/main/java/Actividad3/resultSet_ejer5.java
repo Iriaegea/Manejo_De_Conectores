@@ -1,4 +1,4 @@
-package Atcividad3;
+package Actividad3;
 /*
 5. Modificar datos mediante ResultSet .
 Utiliza un ResultSet actualizable (CONCUR_UPDATABLE) para incrementar un 10 % el

@@ -1,4 +1,4 @@
-package Atcividad3;
+package Actividad3;
 /*
  4. Recorrido bidireccional .
 Consulta los empleados ordenados por EMP_NO utilizando un ResultSet de tipo

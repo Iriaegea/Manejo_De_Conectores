@@ -1,4 +1,4 @@
-package Atcividad3;
+package Actividad3;
 
 import java.sql.*;
 
