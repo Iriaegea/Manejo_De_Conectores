@@ -23,14 +23,16 @@ public class Ejercicio1 {
         String contraseña = "abc123.";
         String url = "jdbc:mysql://localhost:3306/empresa_ventas";
 
-        String insertarPedido1 = "INSERT INTO  pedidos(PRODUCTO_NO, ?, UNIDADES, FECHAPEDIDO) VALUES(20, 106, 5, 1999-10-06- 00:00:00)";
-        String insertarPedido2 = "INSERT INTO  pedidos(PRODUCTO_NO, ?, UNIDADES, FECHAPEDIDO) VALUES(20, 106, 5, 1999-11-06- 00:00:00";
+        String insertarPedido = "INSERT INTO  pedidos(PRODUCTO_NO, CLIENTE_NO, UNIDADES, FECHAPEDIDO) VALUES(?, ?, ?, ?)";
+
+
 
         String insertarCliente= "INSERT INTO clientes(nombre, localidad, vendedor_no, debe, haber, limite_credito) VALUES(?, ?, ?, ?, ?, ?)";
         try(Connection conn = DriverManager.getConnection(url, usuario, contraseña );
            ){
             conn.setAutoCommit(false);
            try(PreparedStatement ps = conn.prepareStatement(insertarCliente, Statement.RETURN_GENERATED_KEYS);
+               PreparedStatement ps2 = conn.prepareStatement(insertarPedido)
                ) {
 
 
@@ -44,18 +46,29 @@ public class Ejercicio1 {
                ps.executeUpdate();
 
 
-               ps.setInt();
-               ps.setInt();
-               ps.executeUpdate(insertarPedido1);
-               ps.executeUpdate(insertarPedido2);
-
+               int idGenerado = 0;
 
                try (ResultSet rs = ps.getGeneratedKeys()) {
-                   while (rs.next()) {
-                       int idGenerado = rs.getInt(1);
+                   if (rs.next()) {
+                       idGenerado = rs.getInt(1);
                        System.out.println("El id generado es " + idGenerado);
+                   } else{
+                       throw new SQLException("Error al generar la clave");
                    }
                }
+
+               ps2.setInt(1, 106 );
+               ps2.setInt(2, idGenerado);
+               ps2.setInt(3, 4);
+               ps2.setString(4, "1999-10-06- 00:00:00");
+               ps2.executeUpdate();
+               //"INSERT INTO  pedidos(PRODUCTO_NO, CLIENTE_NO, UNIDADES, FECHAPEDIDO) VALUES(20, 106, 5, 1999-10-06- 00:00:00)"
+
+               ps2.setInt(1, 106);
+               ps2.setInt(2, 0);
+               ps2.setInt(3, 4);
+               ps2.setTimestamp(4, Timestamp.valueOf("1999-10-06 00:00:00"));
+               ps2.executeUpdate();
 
                conn.commit();
                System.out.println("Cliente añadido");
