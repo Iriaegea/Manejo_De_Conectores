@@ -1,5 +1,7 @@
 package Actividad4;
 
+import javax.swing.plaf.nimbus.State;
+import java.math.BigDecimal;
 import java.sql.*;
 
 
@@ -21,18 +23,53 @@ public class Ejercicio1 {
         String contraseña = "abc123.";
         String url = "jdbc:mysql://localhost:3306/empresa_ventas";
 
+        String insertarPedido1 = "INSERT INTO  pedidos(PRODUCTO_NO, ?, UNIDADES, FECHAPEDIDO) VALUES(20, 106, 5, 1999-10-06- 00:00:00)";
+        String insertarPedido2 = "INSERT INTO  pedidos(PRODUCTO_NO, ?, UNIDADES, FECHAPEDIDO) VALUES(20, 106, 5, 1999-11-06- 00:00:00";
 
-        String insertarCliente= "INSERT INTO clientes(nombre, localidad, vendedor_no, debe, haber, limite_credito) VLUES(?, ?, ?, ?, ?, ?)";
+        String insertarCliente= "INSERT INTO clientes(nombre, localidad, vendedor_no, debe, haber, limite_credito) VALUES(?, ?, ?, ?, ?, ?)";
         try(Connection conn = DriverManager.getConnection(url, usuario, contraseña );
-           PreparedStatement ps = conn.prepareStatement(insertarCliente, Statement.RETURN_GENERATED_KEYS)){
+           ){
             conn.setAutoCommit(false);
+           try(PreparedStatement ps = conn.prepareStatement(insertarCliente, Statement.RETURN_GENERATED_KEYS);
+               ) {
 
 
-            ps.setString();
 
-            ps.executeUpdate();
+               ps.setString(1, "cliente1");
+               ps.setString(2, "su localidad");
+               ps.setInt(3, 7499);
+               ps.setBigDecimal(4, new BigDecimal(0));
+               ps.setBigDecimal(5, new BigDecimal(0));
+               ps.setInt(6, 2000);
+               ps.executeUpdate();
+
+
+               ps.setInt();
+               ps.setInt();
+               ps.executeUpdate(insertarPedido1);
+               ps.executeUpdate(insertarPedido2);
+
+
+               try (ResultSet rs = ps.getGeneratedKeys()) {
+                   while (rs.next()) {
+                       int idGenerado = rs.getInt(1);
+                       System.out.println("El id generado es " + idGenerado);
+                   }
+               }
+
+               conn.commit();
+               System.out.println("Cliente añadido");
+           }catch(SQLException e){
+               System.out.println("Error en la transacción " + e.getMessage());
+               conn.rollback();
+           }
+
+
+
         }catch (SQLException e){
-            System.err.println("Error de conexión " + e.getMessage());
+
+            System.err.println("Error de conexión" + e.getMessage());
+
         }
     }
 }
