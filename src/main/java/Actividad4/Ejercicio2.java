@@ -40,7 +40,7 @@ public class Ejercicio2 {
 
                     ps.addBatch();
                 }
-                //NTO clientes(nombre, localidad, vendedor_no, debe, haber, limite_credito) VALUES( client5, su localidad, 7499, 0, 0, 2000)");
+                // clientes(nombre, localidad, vendedor_no, debe, haber, limite_credito) VALUES( client5, su localidad, 7499, 0, 0, 2000)");
 
 
                 int[] resultados = ps.executeBatch();

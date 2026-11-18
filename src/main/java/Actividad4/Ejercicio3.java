@@ -1,8 +1,7 @@
 package Actividad4;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.*;
 
  /*
             Ejercicio 3. Recuperación parcial mediante savepoints
@@ -26,11 +25,63 @@ public class Ejercicio3 {
         String contraseña = "abc123.";
         String url = "jdbc:mysql://localhost:3306/empresa_ventas";
 
-
+        String insertarCliente ="INSERT INTO clientes(nombre, localidad, vendedor_no, debe, haber, limite_credito) VALUES(?, ?, ?, ?, ?, ?)";
         try(Connection conn = DriverManager.getConnection(url, usuario, contraseña)){
+            conn.setAutoCommit(false);
+
+            try(PreparedStatement ps = conn.prepareStatement(insertarCliente)){
+                ps.setString(1, "Ana");
+                ps.setString(2, "Localidad de ana");
+                ps.setInt(3, 7499);
+                ps.setBigDecimal(4, new BigDecimal(0));
+                ps.setBigDecimal(5, new BigDecimal(0));
+                ps.setBigDecimal(6, new BigDecimal("2000"));
+                ps.executeUpdate();
+
+                Savepoint sp = conn.setSavepoint("DespuesDeAna");
+
+                try{
+
+                    ps.setString(1, "Luis");
+                    ps.setString(2, "Localidad de ana");
+                    ps.setInt(3, 0); // fuerzo el fallo con un codigo q no existe
+                    ps.setBigDecimal(4, new BigDecimal(0));
+                    ps.setBigDecimal(5, new BigDecimal(0));
+                    ps.setBigDecimal(6, new BigDecimal("2000"));
+                    ps.executeUpdate();
+
+                }catch (SQLException e){
+                    System.err.println(e.getSQLState());
+                    System.err.println(e.getMessage());
+
+
+                    if(e.getSQLState() != null && e.getSQLState().startsWith("23")){
+                        conn.rollback(sp);
+                    } else {
+                        throw e; // lanzar para q el de fuera haga el rollback
+                    }
+
+                }
+
+
+                ps.setString(1, "Marta");
+                ps.setString(2, "Localidad de ana");
+                ps.setInt(3, 7499);
+                ps.setBigDecimal(4, new BigDecimal(0));
+                ps.setBigDecimal(5, new BigDecimal(0));
+                ps.setBigDecimal(6, new BigDecimal("2000"));
+
+                ps.executeUpdate();
+                conn.commit(); // posicion del commit (antes lo tenía justo antes del último catch)
+            }catch (SQLException e){
+                conn.rollback();
+
+            }
+
 
 
         }catch (SQLException e){
+
             System.err.println(e.getMessage());
             System.err.println(e.getSQLState());
         }
